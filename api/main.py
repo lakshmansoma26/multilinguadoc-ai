@@ -47,6 +47,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.get("/")
+def root():
+    return {"message": "LinguaDoc API root working."}
+
 
 @app.on_event("startup")
 def startup_event():
@@ -55,7 +59,7 @@ def startup_event():
 
 @app.get("/health")
 def health_check():
-    return {"status": "ok", "message": "LinguaDoc AI API is running"}
+    return {"status": "ok"}
 
 
 @app.post("/upload")
