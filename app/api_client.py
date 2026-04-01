@@ -8,7 +8,7 @@ def upload_document(file_bytes: bytes, file_name: str) -> dict:
         "file": (file_name, file_bytes, "application/pdf")
     }
 
-    response = requests.post(f"{API_BASE_URL}/upload", files=files)
+    response = requests.post(f"{API_BASE_URL}/upload", files=files, timeout=300)
     response.raise_for_status()
     return response.json()
 
@@ -20,7 +20,7 @@ def ask_question(document_id: str, question: str, output_language: str) -> dict:
         "output_language": output_language
     }
 
-    response = requests.post(f"{API_BASE_URL}/ask", json=payload)
+    response = requests.post(f"{API_BASE_URL}/ask", json=payload, timeout=300)
     response.raise_for_status()
     return response.json()
 
@@ -32,7 +32,7 @@ def generate_summary(document_id: str, summary_type: str, output_language: str) 
         "output_language": output_language
     }
 
-    response = requests.post(f"{API_BASE_URL}/summary", json=payload)
+    response = requests.post(f"{API_BASE_URL}/summary", json=payload, timeout=300)
     response.raise_for_status()
     return response.json()
 
@@ -43,12 +43,12 @@ def generate_study_material(document_id: str, output_language: str) -> dict:
         "output_language": output_language
     }
 
-    response = requests.post(f"{API_BASE_URL}/study", json=payload)
+    response = requests.post(f"{API_BASE_URL}/study", json=payload, timeout=300)
     response.raise_for_status()
     return response.json()
 
 
 def health_check() -> dict:
-    response = requests.get(f"{API_BASE_URL}/health")
+    response = requests.get(f"{API_BASE_URL}/health", timeout=30)
     response.raise_for_status()
     return response.json()

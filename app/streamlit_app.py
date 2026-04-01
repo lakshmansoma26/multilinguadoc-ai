@@ -188,14 +188,17 @@ st.markdown(
 
 backend_ok = False
 backend_message = "Backend not reachable"
+backend_debug = ""
 
 try:
     backend_status = health_check()
     backend_ok = backend_status.get("status") == "ok"
     backend_message = backend_status.get("message", "Backend connected")
-except Exception:
+    backend_debug = f"Health check response: {backend_status}"
+except Exception as e:
     backend_ok = False
     backend_message = "FastAPI backend is offline"
+    backend_debug = f"{type(e).__name__}: {e}"
 
 st.markdown(
     """
@@ -223,6 +226,7 @@ with st.sidebar:
             f"<div class='status-bad'>● {backend_message}</div>",
             unsafe_allow_html=True
         )
+    st.caption(backend_debug)
 
     output_language = st.selectbox(
         "Output Language",
@@ -266,7 +270,7 @@ with st.sidebar:
     )
 
 if not backend_ok:
-    st.warning("Start FastAPI first with: uvicorn api.main:app --reload")
+    st.warning("Backend service is unreachable. Check the deployed API URL or service logs.")
     st.stop()
 
 if uploaded_file is not None:
