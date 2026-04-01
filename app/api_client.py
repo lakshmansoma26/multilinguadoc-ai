@@ -1,6 +1,6 @@
 import requests
 
-API_BASE_URL = "http://127.0.0.1:8000"
+API_BASE_URL = "https://multilingualdoc-ai.onrender.com"
 
 
 def upload_document(file_bytes: bytes, file_name: str) -> dict:
