@@ -2,7 +2,7 @@
 
 ## Multilingual Document Intelligence Platform
 
-LinguaDoc AI is a Python-based end-to-end AI system for building knowledge from PDF documents and enabling intelligent interactions via natural language and multilingual support.
+Multi Lingual Doc AI is a Python-based end-to-end AI system for building knowledge from PDF documents and enabling intelligent interactions via natural language and multilingual support.
 
 ### Main functionalities
 - PDF ingest + extraction
@@ -223,19 +223,12 @@ Add tests recommended:
 
 ---
 
-## Security (public repo usage)
-
-1. Do not commit `.env` to the repo. `.env` is listed in `.gitignore` and should remain local.
-2. Use environment variables for secrets. `core/config.py` raises if `OPENAI_API_KEY` is missing.
-3. If you want others to run the repo, they must create their own `.env`:
-   - `OPENAI_API_KEY=sk-...`
-4. If key ever leaked: revoke/rotate immediately in OpenAI dashboard, then update `.env`.
 
 ### How users run the project safely
 
 - clone repo
 - install deps (`pip install -r requirements.txt`)
-- create `.env` manually with their OpenAI key
+- create `.env` manually with users OpenAI key
 - start backend and Streamlit UI
 
 The code uses `os.getenv("OPENAI_API_KEY")` so no key is stored in source.
@@ -245,14 +238,6 @@ The code uses `os.getenv("OPENAI_API_KEY")` so no key is stored in source.
 
 ---
 
-## Security & hardening suggestions
-
-- validate `OPENAI_API_KEY` at startup
-- add rate limiting
-- add auth and user scoping
-- add `DELETE /documents/{id}`
-- add cleanup for old indexes and files
-- handle non-JSON text encodings and very large documents gracefully
 
 ---
 
@@ -275,13 +260,7 @@ The code uses `os.getenv("OPENAI_API_KEY")` so no key is stored in source.
 - **Download**: export summaries and study materials as `.txt` files
 - **Session State**: persistent chat history within session
 
-### UI/UX improvements
-- Fixed-height chat container (prevents excessive page scrolling)
-- Evidence expander for each answer with page numbers and FAISS distance
-- Real-time backend connectivity indicator in sidebar
-- Better error messages (backend offline, API errors, etc.)
-- Spinner during LLM generation with visual feedback
-- Clean markdown formatting for readable outputs
+
 
 ---
 
@@ -289,22 +268,14 @@ The code uses `os.getenv("OPENAI_API_KEY")` so no key is stored in source.
 
 - Backend API: FastAPI with CORS enabled for cross-origin requests
 - Frontend client wrapper: `app/api_client.py` handles all HTTP calls to backend
-- Database: SQLite3 (built-in, no external dependency)
+- Database: SQLite3 (built-in)
 - External costs: OpenAI embeddings + chat completions per request
 - Session management: Streamlit session state persists across reruns during session
 - FAISS indexes: L2 distance metric for semantic similarity
 
 ---
 
-## Recent improvements
 
-- ✅ Fixed missing critical dependencies in `requirements.txt` (openai, faiss-cpu, pdfplumber, langdetect, fastapi, uvicorn)
-- ✅ Enhanced error handling in Streamlit with specific API error messages
-- ✅ Improved frontend layout: fixed-height chat container to prevent excessive scrolling
-- ✅ Added evidence expanders showing source pages and similarity distances
-- ✅ Better backend health check indicator in sidebar
-- ✅ Streamlined requirements.txt (removed unnecessary packages, kept only essentials)
-- ✅ NLP components documented: language detection, chunking, embeddings, retrieval, generation
 
 ---
 
