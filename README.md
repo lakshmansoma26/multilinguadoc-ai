@@ -19,18 +19,18 @@ Multi Lingual Doc AI is a Python-based end-to-end AI system for building knowled
 ---
 
 ## NLP components and techniques
-This project uses the following NLP-based elements:
+
 - `langdetect` for language identification from extracted text (`services/language_service.py`)
 - Paragraph-aware text chunking and overlap strategy for semantic coherence (`services/chunk_service.py`)
 - Embedding generation for semantic representation with `text-embedding-3-small` (`services/embedding_service.py`)
 - FAISS similarity search in semantic vector space for retrieval (`services/vector_service.py`, `services/retrieval_service.py`)
 - Prompt-based generation for QA, summarization, and educational content using OpenAI (`services/llm_service.py`, `services/summary_service.py`, `services/study_service.py`)
-- Multi-step development: extract ➜ pre-process ➜ embed ➜ retrieve ➜ generate answers, summaries and study materials.
+- Multi-step development: extract ? pre-process ? embed ? retrieve ? generate answers, summaries and study materials.
 
 
 ---
 
-## Repository structure
+## Repository Architecture
 
 - `api/`
   - `main.py`: FastAPI server and routes (`/health`, `/upload`, `/ask`, `/summary`, `/study`)
@@ -254,28 +254,10 @@ The code uses `os.getenv("OPENAI_API_KEY")` so no key is stored in source.
 ### Features
 - **PDF Upload**: sidebar file picker, automatic processing
 - **Chat Interface**: ask questions above input box, responses display in scrollable container
-- **Evidence Retrieval**: view source pages + chunks with similarity scores
+- **Evidence Retrieval**: view source pages 
 - **Summarization**: multiple types (short, bullet, detailed)
 - **Study Material**: auto-generated Q&A, MCQs, flashcards
 - **Download**: export summaries and study materials as `.txt` files
-- **Session State**: persistent chat history within session
-
-
-
----
-
-## Notes
-
-- Backend API: FastAPI with CORS enabled for cross-origin requests
-- Frontend client wrapper: `app/api_client.py` handles all HTTP calls to backend
-- Database: SQLite3 (built-in)
-- External costs: OpenAI embeddings + chat completions per request
-- Session management: Streamlit session state persists across reruns during session
-- FAISS indexes: L2 distance metric for semantic similarity
-
----
-
-
 
 ---
 
@@ -303,5 +285,3 @@ Study:
 curl -X POST "http://127.0.0.1:8000/study" -H "Content-Type: application/json" \
   -d '{"document_id":"<uuid>","output_language":"English"}'
 ```
-
-
