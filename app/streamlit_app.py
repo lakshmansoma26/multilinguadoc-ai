@@ -2,6 +2,7 @@ import os
 import sys
 import streamlit as st
 import requests
+import time
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.dirname(CURRENT_DIR)
@@ -197,7 +198,7 @@ try:
     backend_debug = f"Health check response: {backend_status}"
 except Exception as e:
     backend_ok = False
-    backend_message = "FastAPI backend is offline"
+    backend_message = "Service is waking up. Please wait about 1 minute while the backend starts."
     backend_debug = f"{type(e).__name__}: {e}"
 
 st.markdown(
@@ -223,7 +224,7 @@ with st.sidebar:
         )
     else:
         st.markdown(
-            f"<div class='status-bad'>● {backend_message}</div>",
+            f"<div class='status-bad'>● Service is waking up...</div>",
             unsafe_allow_html=True
         )
     st.caption(backend_debug)
@@ -270,8 +271,42 @@ with st.sidebar:
     )
 
 if not backend_ok:
-    st.warning("Backend service is unreachable. Check the deployed API URL or service logs.")
-    st.stop()
+    st.warning("Service is waking up. Please wait about 1 minute while the backend starts.")
+
+    progress_placeholder = st.empty()
+    status_placeholder = st.empty()
+
+    max_wait_seconds = 70
+    check_interval = 5
+    attempts = max_wait_seconds // check_interval
+
+    backend_awake = False
+
+    for i in range(attempts):
+        remaining = max_wait_seconds - (i * check_interval)
+        progress_placeholder.info(
+            f"Backend is starting... checking again in {check_interval} seconds. "
+            f"Approximate remaining wait: {remaining} seconds."
+        )
+
+        time.sleep(check_interval)
+
+        try:
+            backend_status = health_check()
+            if backend_status.get("status") == "ok":
+                backend_awake = True
+                status_placeholder.success("Backend is awake now. Loading the app...")
+                time.sleep(1)
+                st.rerun()
+        except Exception:
+            pass
+
+    if not backend_awake:
+        status_placeholder.error(
+            "The backend is still waking up or temporarily unavailable. "
+            "Please refresh this page in a moment."
+        )
+        st.stop()
 
 if uploaded_file is not None:
     if uploaded_file.name != st.session_state["last_uploaded_name"]:
